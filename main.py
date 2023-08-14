@@ -10,7 +10,7 @@ from config import settings
 from events.handle_game import SpyGame
 
 # Logging setup
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 class SpyBot:
 
@@ -52,5 +52,9 @@ class SpyBot:
                 voting_handler.handle_vote(vote)
 
 if __name__ == "__main__":
-    bot = SpyBot()
-    SocketModeHandler(bot.app, settings.SLACK_APP_TOKEN).start()
+    try:
+        bot = SpyBot()
+        SocketModeHandler(bot.app, settings.SLACK_APP_TOKEN).start()
+    except Exception as e:
+        logging.exception("An error occurred: %s", e)
+
