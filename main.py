@@ -4,7 +4,7 @@ import re
 # Slack-API imports
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 from slack_sdk import WebClient
-from flask import Flask
+from flask import Flask, jsonify
 
 # Local imports
 from config import settings
@@ -53,10 +53,10 @@ class SpyBot:
                     'message': body['message']
                 })
                 voting_handler.handle_vote(vote)
-                
-        @webapp.route("/health")
+
+        @webapp.route('/health', methods=['GET'])
         def health_check():
-            return "Healthy", 200
+            return jsonify(status="Healthy"), 200
 
 if __name__ == "__main__":
     try:
