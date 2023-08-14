@@ -1,5 +1,4 @@
-from slack_sdk import WebClient
-from config.settings import SLACK_BOT_TOKEN, SPY_BOT_TESTING_CHANNEL_ID
+from config.settings import SPY_BOT_TESTING_CHANNEL_ID
 import logging
 
 logging.basicConfig(level=logging.INFO)

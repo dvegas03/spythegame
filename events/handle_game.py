@@ -50,9 +50,8 @@ class SpyGame:
     def handle_ready_play(self, ack, body, say: Say, context, **kwargs):
         ack()
         player_names = [player_data["name"] for player_data in self.players.values()]
-        newline = '\n'
+        newline = "\n"
         say(f"The game has started! Players in the game: {newline.join(player_names)}")
-
 
         spy = random.choice(list(self.players.keys()))
         country = random.choice(categories.Countries)
