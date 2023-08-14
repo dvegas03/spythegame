@@ -25,7 +25,7 @@ class SpyGame:
 
         if user_id not in self.players:
             self.players[user_id] = {"name": user_name, "role": None, "alive": True}
-            say(f"{user_name} has shown interest in the game!")
+            say(f"{user_name} has joined the game!")
             return True
         else:
             say(f"{user_name}, you're already in the game!")
@@ -42,7 +42,7 @@ class SpyGame:
         self.client.chat_postEphemeral(
             channel=body.get("channel_id"),
             user=user_id,
-            text="Ready to initiate the game?",
+            text="Ready to start the game?",
             blocks=[ready_to_play_button()],
         )
 
@@ -50,7 +50,9 @@ class SpyGame:
     def handle_ready_play(self, ack, body, say: Say, context, **kwargs):
         ack()
         player_names = [player_data["name"] for player_data in self.players.values()]
-        say(f"The game has started! Players in the game: {', '.join(player_names)}")
+        newline = '\n'
+        say(f"The game has started! Players in the game: {newline.join(player_names)}")
+
 
         spy = random.choice(list(self.players.keys()))
         country = random.choice(categories.Countries)
