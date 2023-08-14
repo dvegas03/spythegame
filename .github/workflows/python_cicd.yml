@@ -1,0 +1,40 @@
+name: Python Slack Bot CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  linting:
+    name: Lint Python Code
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8
+
+    - name: Lint with flake8
+      run: flake8 .
+
+  deploy:
+    name: Deploy Bot
+    needs: linting
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+
+    - name: Deploy Bot
+      run: ./Start
