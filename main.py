@@ -14,6 +14,7 @@ webapp = Flask(__name__)
 
 # Logging setup
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 class SpyBot:
 
@@ -56,7 +57,10 @@ class SpyBot:
 
         @webapp.route('/health', methods=['GET'])
         def health_check():
-            return jsonify(status="Healthy"), 200
+            logger.info("Received health check request.")
+            response = jsonify(status="Healthy")
+            logger.info("Sent health check response: %s", response.data)
+            return response, 200
 
 if __name__ == "__main__":
     try:
