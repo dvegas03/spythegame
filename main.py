@@ -63,6 +63,12 @@ class SpyBot:
             return response, 200
 
 if __name__ == "__main__":
+    #Flask app for health checks
+    from threading import Thread
+
+    flask_thread = Thread(target=webapp.run, kwargs={'port': 8080})
+    flask_thread.start()
+
     try:
         bot = SpyBot()
         SocketModeHandler(bot.app, settings.SLACK_APP_TOKEN).start()
