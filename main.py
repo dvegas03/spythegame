@@ -1,4 +1,5 @@
 import logging
+from threading import Thread
 import re
 
 # Slack-API imports
@@ -15,6 +16,13 @@ webapp = Flask(__name__)
 # Logging setup
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
+@webapp.route('/health', methods=['GET'])
+def health_check():
+    logger.info("Received health check request.")
+    response = jsonify(status="Healthy")
+    logger.info("Sent health check response: %s", response.data)
+    return response, 200
 
 class SpyBot:
 
@@ -55,17 +63,8 @@ class SpyBot:
                 })
                 voting_handler.handle_vote(vote)
 
-        @webapp.route('/health', methods=['GET'])
-        def health_check():
-            logger.info("Received health check request.")
-            response = jsonify(status="Healthy")
-            logger.info("Sent health check response: %s", response.data)
-            return response, 200
-
 if __name__ == "__main__":
     #Flask app for health checks
-    from threading import Thread
-
     flask_thread = Thread(target=webapp.run, kwargs={'host': '0.0.0.0', 'port': 8080})
     flask_thread.start()
 
