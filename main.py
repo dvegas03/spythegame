@@ -4,10 +4,13 @@ import re
 # Slack-API imports
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 from slack_sdk import WebClient
+from flask import Flask
 
 # Local imports
 from config import settings
 from events.handle_game import SpyGame
+
+webapp = Flask(__name__)
 
 # Logging setup
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -50,6 +53,10 @@ class SpyBot:
                     'message': body['message']
                 })
                 voting_handler.handle_vote(vote)
+                
+        @webapp.route("/health")
+        def health_check():
+            return "Healthy", 200
 
 if __name__ == "__main__":
     try:
